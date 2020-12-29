@@ -107,7 +107,7 @@ void RotaryLoop()
   Serial.println(rotaryValue);
   if (btnAction == ACTION_BRIGHTNESS)
   {
-    if (rotaryValue < ) rotaryValue = 0;
+    if (rotaryValue < 5) rotaryValue = 0;
     FastLED.setBrightness(rotaryValue);
     FastLED.show();
 
