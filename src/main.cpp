@@ -4,7 +4,7 @@ Lib fast led: https://github.com/FastLED/FastLED
 Rotary encoder: https://github.com/igorantolic/ai-esp32-rotary-encoder
 */
 
-#include "AiEsp32RotaryEncoder.h"
+#include <AiEsp32RotaryEncoder.h>
 #include <Arduino.h>
 #include <FastLED.h>
 
@@ -61,7 +61,7 @@ void setup()
   dbtime = millis();
   rotaryEncoder.begin();
   rotaryEncoder.setup([] { rotaryEncoder.readEncoder_ISR(); });
-  rotaryEncoder.setBoundaries(0, 100, true); // on set de 0 a 100 ensuite en fonction de l'action on ferra la conversion
+  rotaryEncoder.setBoundaries(0, 100, true); // on set de 0 a 100
 }
 
 void loop()
@@ -103,19 +103,17 @@ void RotaryLoop()
   if (encoderDelta == 0)
     return;
 
-  int16_t rotaryValue = rotaryEncoder.readEncoder();
+  int16_t rotaryValue = rotaryEncoder.readEncoder() * 2.55;
   Serial.println(rotaryValue);
   if (btnAction == ACTION_BRIGHTNESS)
   {
-    if (rotaryValue < 5) rotaryValue = 0;
+    if (rotaryValue < 5)
+      rotaryValue = 0;
     FastLED.setBrightness(rotaryValue);
-    FastLED.show();
-
   }
   else
   {
-    uint8_t hue = (int)(rotaryValue * 2.55);
-    Serial.println(hue);
-    SetColorByHue(hue);
+    SetColorByHue(rotaryValue);
   }
+  FastLED.show();
 }
